@@ -1,7 +1,7 @@
 /*
-* Объект
+* Объект с данными о товаре в магазинах
 */
-var data = {
+let data = {
     "displayedName": {
         "displayedName": {
             "value": [
@@ -35,6 +35,7 @@ var data = {
                 "86": "15",
                 "114": "41",
                 "117": "46",
+                "tset": "test",
                 "143": "46",
                 "162": "4",
                 "171": "0",
@@ -57,14 +58,20 @@ data.showProductName = function() {
 data.getNoneEmptyStores = function() {
   let resultArray = new Array()
 
-  for (var region in this.stock.stocks) {
-    for (var store in this.stock.stocks[region]) {
-      alert("Region: " + region + " | Store: " + store + "-" + this.stock.stocks[region][store])
+  for (let region in this.stock.stocks) {
+    for (let store in this.stock.stocks[region]) {
+      // alert("Region: " + region + " | Store: " + store + "-" + this.stock.stocks[region][store])
 
-      if (parseInt(this.stock.stocks[region][store]) > 0) {
-        alert("OK")
-        resultArray.push(store)
+      let storeItems = parseInt(this.stock.stocks[region][store])
+
+      alert("Current item quantity: " + storeItems)
+      
+      if (isNaN(storeItems)) {
+        alert("Error while reading data")
+        continue
       }
+
+      if (storeItems > 0) resultArray.push(store)
     }
   }
 
@@ -73,8 +80,8 @@ data.getNoneEmptyStores = function() {
 
 /*
 * Возврат массива с двумя символьными значениями:
-* 1) Максимальное количество товара в регионе.
-* 2) Номер магазина с максимальным количеством товара.
+*   1) Максимальное количество товара в регионе.
+*   2) Номер магазина с максимальным количеством товара.
 */
 data.findMaxPackedStore = function(region) {
   alert("\nRegion to find: " + region)
@@ -84,21 +91,27 @@ data.findMaxPackedStore = function(region) {
     return []
   }
 
-  var max = -1
-  var maxStoreName = "sample"
+  let max = -1
+  let maxStoreName = "sample"
 
-  for (var store in this.stock.stocks[region]) {
-    // TODO: exception catch
-    if (parseInt(this.stock.stocks[region][store]) > max) {
+  for (let store in this.stock.stocks[region]) {
+    let storeItems = parseInt(this.stock.stocks[region][store])
+
+    if (isNaN(storeItems)) {
+        alert("Error while reading data")
+        continue
+    }
+
+    if (storeItems > max) {
       alert(this.stock.stocks[region][store] + " > " + max)
       max = this.stock.stocks[region][store]
       maxStoreName = store
-    
     }
     else
       alert(this.stock.stocks[region][store] + " < " + max)
   }
 
+  // TODO: можно через undefined
   if (max == -1)
     alert ("Couldn't find max. Is there any goods in this region?")
   else {
