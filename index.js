@@ -1,8 +1,6 @@
 /*
-СОздать объект и встроить в него все эти методы
+* Объект
 */
-
-
 var data = {
     "displayedName": {
         "displayedName": {
@@ -47,54 +45,47 @@ var data = {
 }
 
 /*
-* Демонстрация названия товара
-
-* (Возврат названия товара)
+* Возврат названия товара
 */
 data.showProductName = function() {
-  alert(this.displayedName.displayedName.value[0])
+  return this.displayedName.displayedName.value[0]
 }
 
 /*
-* Демонстрация списка магазинов с ненулевым числом товаров
-
-* (получить массив номеров магазинов, в которых есть товары в наличии)
+* Возврат массива номеров всех магазинов с ненулевым количеством товара
 */
 data.getNoneEmptyStores = function() {
   let resultArray = new Array()
 
   for (var region in this.stock.stocks) {
-    alert("\tRegion: " + region)
     for (var store in this.stock.stocks[region]) {
-      // alert("Store: "+store + "-" + this.stock.stocks[region][store])
+      alert("Region: " + region + " | Store: " + store + "-" + this.stock.stocks[region][store])
 
-      if (this.stock.stocks[region][store] > 0)
-        alert("Store: "+store + "-" + this.stock.stocks[region][store]);
-      
-
-      // if (this.stock.stocks[region][])
-      // resultArray.push()
+      if (parseInt(this.stock.stocks[region][store]) > 0) {
+        alert("OK")
+        resultArray.push(store)
+      }
     }
   }
+
+  return resultArray
 }
 
 /*
-* Демонстрация "максимального" магазина
-
-* (найти максимальное количество товара в регионе, вернуть это количество и номер магазина)
+* Возврат массива с двумя символьными значениями:
+* 1) Максимальное количество товара в регионе.
+* 2) Номер магазина с максимальным количеством товара.
 */
 data.findMaxPackedStore = function(region) {
   alert("\nRegion to find: " + region)
 
-  if (typeof this.stock.stocks[region] != 'undefined')
-  alert ("OK")
-  else {
-    alert ("NOT OK")
-    return
+  if (typeof this.stock.stocks[region] == 'undefined') {
+    alert ("There's no such region in database")
+    return []
   }
 
-  let max = -1
-  let maxStoreName = "sample"
+  var max = -1
+  var maxStoreName = "sample"
 
   for (var store in this.stock.stocks[region]) {
     // TODO: exception catch
@@ -110,13 +101,19 @@ data.findMaxPackedStore = function(region) {
 
   if (max == -1)
     alert ("Couldn't find max. Is there any goods in this region?")
-  else
+  else {
     alert ("Max is " + max + " in store " + maxStoreName)
+    return [max, maxStoreName]
+  }
 }
 
+let name = data.showProductName()
+let name1 = data.getNoneEmptyStores()
+let name2 = data.findMaxPackedStore("34")
 
-data.showProductName()
-alert("\n\t- - - - - - - - - - - - - -\n")
-data.getNoneEmptyStores()
-alert("\n\t- - - - - - - - - - - - - -\n")
-data.findMaxPackedStore("34")
+console.log("\n\t - - - - Результаты - - - -\n")
+console.log(name)
+console.log("\n\t - - - - - - - - -\n")
+console.log(name1)
+console.log("\n\t - - - - - - - - -\n")
+console.log(name2)
