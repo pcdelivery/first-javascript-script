@@ -35,7 +35,7 @@ let data = {
                 "86": "15",
                 "114": "41",
                 "117": "46",
-                "tset": "test",
+                "test": "test",
                 "143": "46",
                 "162": "4",
                 "171": "0",
@@ -60,14 +60,12 @@ data.getNoneEmptyStores = function() {
 
   for (let region in this.stock.stocks) {
     for (let store in this.stock.stocks[region]) {
-      // alert("Region: " + region + " | Store: " + store + "-" + this.stock.stocks[region][store])
+      console.log("[Region: " + region + " | Store: " + store + " | Quantity:" + this.stock.stocks[region][store] + "]")
 
       let storeItems = parseInt(this.stock.stocks[region][store])
 
-      alert("Current item quantity: " + storeItems)
-      
       if (isNaN(storeItems)) {
-        alert("Error while reading data")
+        console.error("Error while reading data: " + this.stock.stocks[region][store])
         continue
       }
 
@@ -84,10 +82,10 @@ data.getNoneEmptyStores = function() {
 *   2) Номер магазина с максимальным количеством товара.
 */
 data.findMaxPackedStore = function(region) {
-  alert("\nRegion to find: " + region)
+  console.log("\nRegion to find: " + region)
 
   if (typeof this.stock.stocks[region] == 'undefined') {
-    alert ("There's no such region in database")
+    console.error("There's no such region in database: " + region)
     return []
   }
 
@@ -98,35 +96,43 @@ data.findMaxPackedStore = function(region) {
     let storeItems = parseInt(this.stock.stocks[region][store])
 
     if (isNaN(storeItems)) {
-        alert("Error while reading data")
+        console.log("Error while reading data: " + this.stock.stocks[region][store])
         continue
     }
 
     if (storeItems > max) {
-      alert(this.stock.stocks[region][store] + " > " + max)
+      console.log(this.stock.stocks[region][store] + " > " + max)
       max = this.stock.stocks[region][store]
       maxStoreName = store
     }
     else
-      alert(this.stock.stocks[region][store] + " < " + max)
+      console.log(this.stock.stocks[region][store] + " < " + max)
   }
 
   // TODO: можно через undefined
-  if (max == -1)
-    alert ("Couldn't find max. Is there any goods in this region?")
+  if (max == -1) {
+    console.log("Couldn't find max. Is there any goods in this region?")
+    return []
+  }
   else {
-    alert ("Max is " + max + " in store " + maxStoreName)
+    console.log("Max is " + max + " in store " + maxStoreName)
     return [max, maxStoreName]
   }
 }
 
 let name = data.showProductName()
-let name1 = data.getNoneEmptyStores()
-let name2 = data.findMaxPackedStore("34")
+let notNullStores = data.getNoneEmptyStores()
+let maxStoreData = data.findMaxPackedStore("34")
 
-console.log("\n\t - - - - Результаты - - - -\n")
+console.log("\n\n - - - - - - - - - - RESULTS - - - - - - - - - -\n")
+console.log("\n\t - - - - 1 - - - -\n")
+
 console.log(name)
-console.log("\n\t - - - - - - - - -\n")
-console.log(name1)
-console.log("\n\t - - - - - - - - -\n")
-console.log(name2)
+
+console.log("\n\t - - - - 2 - - - -\n")
+
+console.log(notNullStores)
+
+console.log("\n\t - - - - 3 - - - -\n")
+
+console.log(maxStoreData)
